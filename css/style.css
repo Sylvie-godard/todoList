@@ -14,7 +14,11 @@ html, body {
 a {
     cursor: pointer;
     text-decoration: none;
-    color: black;
+    color: grey;
+}
+
+li {
+    list-style-type: none;
 }
 
 /* MENU */
@@ -24,6 +28,7 @@ a {
     left: 0;
     right: 0;
     color: white;
+    padding-bottom: 0;
     background-color: #6e75ce;
     height: 4rem;
     align-items: center;
@@ -78,21 +83,65 @@ a {
     color: white;
     font-size: 0.75rem;
 }
+.add-items {
+    display: flex;
+}
+
+.item{
+    border-bottom: 0.1rem solid #becfe6;
+    width: 50%;
+}
+
+.item div + p {
+    padding-left: 1rem;
+    font-size: 0.8rem;
+}
+
+input[type=text] {
+    width: 30%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+li .item-content {
+    display: flex;
+    justify-content: space-between;
+}
 
 /*__________________________________________________________________________________________________________________/*
 
 /* CONTENT */
 
+.line {
+    text-decoration: line-through;
+}
 .content {
     margin: 4rem 0;
+    height: 85%;
 }
 
+i:hover {
+    cursor: pointer;
+}
+
+#trash {
+    font-size: 4rem !important;
+}
 .content div {
-    display: block;
-    border-bottom: 0.1rem solid #becfe6;
-    padding: 1.5rem ;
+    padding: 0.5rem;
 }
 
+.content ul {
+    height: 90%;
+}
+
+.lineDone {
+    color: rgba(160, 162, 164, 0.98);
+    text-decoration: line-through;
+}
 
 /*FOOTER*/
 footer {

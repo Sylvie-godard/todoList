@@ -3,8 +3,10 @@
     <head>
         <meta charset='utf-8'/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Slow News</title>
+        <title>Todo List</title>
         <link rel='stylesheet' href='css/style.css'>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/b962ab1a72.js" crossorigin="anonymous"></script>
     </head>
     <body>
         <div id='main-nav'>
@@ -26,68 +28,14 @@
                 <li><a href='#'>Logout</a></li>
             </ul>
         </div>
-        <div class="content">
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
+        <div class="content" id="content">
+            <div class="add-items">
+                <i class="material-icons" id="button">add_box</i>
+                <input type="text" id="input" placeholder="Ajouter une tâche">
+                <i class='material-icons' id='trash' job='delete'>delete</i>
             </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-            <div>
-                <p>Edition of the 20th October, 7 AM</p>
-            </div>
-
+            <ul id="list">
+            </ul>
         </div>
         <footer class="footer-img">
             <img src="public/img/listen.png" alt="">
@@ -96,14 +44,7 @@
             <img src="public/img/horloge.png" alt="">
             <img src="public/img/phare.png" alt="">
         </footer>
-        <script type='text/javascript'>
-            function myFunction(event) {
-                let element = document.getElementById('sidebar');
-                element.classList.toggle('open');
-                event.stopPropagation();
-            }
-            let menuElement = document.getElementById('menu-button');
-            menuElement.onclick = myFunction;
-        </script>
+        <script src="https://use.fontawesome.com/b136d4a042.js"></script>
+        <script src="js/script.js"></script>
     </body>
 </html>
