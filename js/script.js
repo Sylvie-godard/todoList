@@ -1,39 +1,42 @@
-const list = document.getElementById('list');
-const trash = document.getElementById('trash');
-const input = document.getElementById('input');
-const button = document.getElementById('button');
-const CHECK = 'check_box';
-const UNCHECK = 'check_box_outline_blank';
-const LINE_DONE = 'line';
+const listElement = document.getElementById('list');
+const trashElement = document.getElementById('trash');
+const buttonElement = document.getElementById('button');
 
 let todoList = [];
 let id = 0;
 
-function myFunction(event) {
+function openSidebar(event) {
   let element = document.getElementById('sidebar');
   element.classList.toggle('open');
   event.stopPropagation();
 }
 
 let menuElement = document.getElementById('menu-button');
-menuElement.onclick = myFunction;
+menuElement.onclick = openSidebar;
 
-function addTodo( toDo, id, date ) {
+function addTodo( toDo, id, date, trash ) {
+  if (trash) {
+    return;
+  }
+
   const text = `<li class='item'>
                   <div class='item-content'>
                     <i class='material-icons' id=${id} job='complete'>check_box_outline_blank</i>
                     <p class='toDoText' id=${id}-text>${toDo}</p>
-                    <i class='material-icons' job='delete'>delete</i>
+                    <i class='material-icons' job='delete' id='${id}'>delete</i>
                   </div>
                   <p>${date}</p>    
                 </li>`;
   const position = 'beforeend';
 
-  list.insertAdjacentHTML(position, text);
+  listElement.insertAdjacentHTML(position, text);
 }
 
 function completeTodo( element, id ) {
   const TEXT =  document.getElementById(id + '-text');
+  const CHECK = 'check_box';
+  const UNCHECK = 'check_box_outline_blank';
+  const LINE_DONE = 'line';
 
   element.classList.toggle(CHECK);
   if (element.classList.contains('check_box')) {
@@ -49,12 +52,21 @@ function completeTodo( element, id ) {
   element.classList.toggle(UNCHECK);
 }
 
-function removeToDo( element ) {
+function removeToDo( element, id ) {
+  // delete in the storage
+  for(let i = 0; i < todoList.length; i++) {
+    if (todoList[i].id === id) {
+      todoList.splice(i, 1);
+    }
+  }
+  // delete node element
   element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode);
 }
 
 let addEvent = function () {
-  const toDo = input.value;
+  const inputElement = document.getElementById('input');
+
+  const toDo = inputElement.value;
 
   let date = new Date();
   let dateFormat = date.getDate() + '-' + (date.getMonth() + 1) + '-' +
@@ -69,32 +81,32 @@ let addEvent = function () {
         id: id,
         done: false
       };
-    input.value = '';
+    inputElement.value = '';
     id++;
   }
 }
 
-button.addEventListener( 'click', function() {
+buttonElement.addEventListener( 'click', function() {
   addEvent();
 });
 
 document.addEventListener( 'keyup', function( event ) {
   if (event.keyCode === 13) {
     addEvent();
+    console.log(todoList);
   }
 });
 
-trash.addEventListener('click', function () {
+trashElement.addEventListener('click', function () {
   todoList.forEach(function( event ){
     let element = document.getElementById(event.id);
     if (event.done === true) {
-      removeToDo(element);
-      delete todoList[event.id];
+      removeToDo(element, event.id);
     }
   });
 });
 
-list.addEventListener('click', function ( event ) {
+listElement.addEventListener('click', function ( event ) {
   let element = event.target;
   const elementJob = element.attributes.job.value;
 
@@ -103,5 +115,4 @@ list.addEventListener('click', function ( event ) {
   } else if (elementJob === 'delete') {
     removeToDo( element );
   }
-
 })

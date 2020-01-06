@@ -89,7 +89,7 @@ li {
 
 .item{
     border-bottom: 0.1rem solid #becfe6;
-    width: 50%;
+    width: 100%;
 }
 
 .item div + p {
@@ -97,8 +97,12 @@ li {
     font-size: 0.8rem;
 }
 
+input {
+    display: flex;
+}
+
 input[type=text] {
-    width: 30%;
+    width: 100%;
     padding: 12px 20px;
     display: inline-block;
     border: 1px solid #ccc;
