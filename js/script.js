@@ -1,118 +1,126 @@
-const listElement = document.getElementById('list');
-const trashElement = document.getElementById('trash');
-const buttonElement = document.getElementById('button');
+var DivManager = (function(){
+  var self = {};
 
-let todoList = [];
-let id = 0;
+  self.init = function (){
+    const listElement = document.getElementById('list');
+    const trashElement = document.getElementById('trash');
+    const buttonAddElement = document.getElementById('button');
+    const menuElement = document.getElementById('menu-button');
+    let todoList = [];
+    let id = 0;
 
-function openSidebar(event) {
-  let element = document.getElementById('sidebar');
-  element.classList.toggle('open');
-  event.stopPropagation();
-}
-
-let menuElement = document.getElementById('menu-button');
-menuElement.onclick = openSidebar;
-
-function addTodo( toDo, id, date, trash ) {
-  if (trash) {
-    return;
-  }
-
-  const text = `<li class='item'>
-                  <div class='item-content'>
-                    <i class='material-icons' id=${id} job='complete'>check_box_outline_blank</i>
-                    <p class='toDoText' id=${id}-text>${toDo}</p>
-                    <i class='material-icons' job='delete' id='${id}'>delete</i>
-                  </div>
-                  <p>${date}</p>    
-                </li>`;
-  const position = 'beforeend';
-
-  listElement.insertAdjacentHTML(position, text);
-}
-
-function completeTodo( element, id ) {
-  const TEXT =  document.getElementById(id + '-text');
-  const CHECK = 'check_box';
-  const UNCHECK = 'check_box_outline_blank';
-  const LINE_DONE = 'line';
-
-  element.classList.toggle(CHECK);
-  if (element.classList.contains('check_box')) {
-    element.innerHTML = CHECK;
-    TEXT.classList.toggle(LINE_DONE);
-    todoList[element.id].done = true;
-  } else if (element.classList.contains('check_box_outline_blank')) {
-    element.innerHTML = UNCHECK;
-    TEXT.classList.toggle(LINE_DONE);
-    todoList[element.id].done = false;
-  }
-
-  element.classList.toggle(UNCHECK);
-}
-
-function removeToDo( element, id ) {
-  // delete in the storage
-  for(let i = 0; i < todoList.length; i++) {
-    if (todoList[i].id === id) {
-      todoList.splice(i, 1);
+    function openSidebar(event) {
+      let element = document.getElementById('sidebar');
+      element.classList.toggle('open');
+      event.stopPropagation();
     }
-  }
-  // delete node element
-  element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode);
-}
 
-let addEvent = function () {
-  const inputElement = document.getElementById('input');
+    function addTodoElement() {
+      const inputElement = document.getElementById('input');
+      const toDo = inputElement.value;
 
-  const toDo = inputElement.value;
+      let date = new Date();
+      let dateFormat = date.getDate() + '-' + (date.getMonth() + 1) + '-' +
+        date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':'
+        + date.getSeconds();
 
-  let date = new Date();
-  let dateFormat = date.getDate() + '-' + (date.getMonth() + 1) + '-' +
-    date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':'
-    + date.getSeconds();
-
-  if (toDo) {
-    addTodo(toDo, id, dateFormat);
-    todoList[id] =
-      {
-        name: toDo,
-        id: id,
-        done: false
-      };
-    inputElement.value = '';
-    id++;
-  }
-}
-
-buttonElement.addEventListener( 'click', function() {
-  addEvent();
-});
-
-document.addEventListener( 'keyup', function( event ) {
-  if (event.keyCode === 13) {
-    addEvent();
-    console.log(todoList);
-  }
-});
-
-trashElement.addEventListener('click', function () {
-  todoList.forEach(function( event ){
-    let element = document.getElementById(event.id);
-    if (event.done === true) {
-      removeToDo(element, event.id);
+      if (toDo) {
+        addTodo(toDo, id, dateFormat);
+        todoList.push(
+          {
+            name: toDo,
+            id: id,
+            done: false,
+            trash: false
+          });
+        inputElement.value = '';
+        id++;
+      }
     }
-  });
-});
 
-listElement.addEventListener('click', function ( event ) {
-  let element = event.target;
-  const elementJob = element.attributes.job.value;
+    function removeToDo( id ) {
+      const todoElement = document.getElementById(id);
+      for (let key in todoList) {
+        if (todoList[key].done === true) {
+          todoList[key].trash = true;
+          delete todoList[key];
+        }
+      }
+      todoElement.parentNode.parentNode.parentNode.removeChild(todoElement.parentNode.parentNode);
+    }
 
-  if ( elementJob === 'complete') {
-    completeTodo( element, element.id );
-  } else if (elementJob === 'delete') {
-    removeToDo( element );
-  }
-})
+    function completeTodo( id) {
+      const todoElement = document.getElementById(id);
+      const TEXT =  document.getElementById(id + '-text');
+      const CHECK = 'check_box';
+      const UNCHECK = 'check_box_outline_blank';
+      const LINE_DONE = 'line';
+
+      if (id in todoList) {
+        if (todoList[id].done === false) {
+          todoList[id].done = true
+          todoElement.innerHTML = CHECK;
+          TEXT.classList.toggle(LINE_DONE);
+        } else {
+          todoList[id].done = false
+          todoElement.innerHTML = UNCHECK;
+          TEXT.classList.toggle(LINE_DONE);
+        }
+      }
+    }
+
+    function addTodo( toDo, id, date, trash ) {
+      if (trash) {
+        return;
+      }
+
+      const text = `<li class='item'>
+                      <div class='item-content'>
+                        <i class='material-icons' id=${id} job='complete'>check_box_outline_blank</i>
+                        <p class='toDoText' id=${id}-text>${toDo}</p>
+                        <i class='material-icons' job='delete' id='${id}-trash'>delete</i>
+                      </div>
+                      <p>${date}</p>    
+                    </li>`;
+      const position = 'beforeend';
+
+      listElement.insertAdjacentHTML(position, text);
+    }
+
+    menuElement.onclick = openSidebar;
+
+    listElement.onclick = function ( event ){
+      let element = event.target;
+      let id = element.id.replace('-trash', '');
+      const elementJob = element.attributes.job.value;
+
+      if (elementJob === 'complete') {
+        completeTodo( id );
+      } else if (elementJob === 'delete') {
+        removeToDo( id );
+      }
+    };
+
+    trashElement.onclick = function () {
+      todoList.forEach(function( element ){
+        if (element.done === true) {
+          removeToDo( element.id );
+        }
+      });
+    };
+
+    buttonAddElement.onclick = function() {
+      addTodoElement();
+    };
+
+    document.onkeyup = function( event ) {
+      if (event.keyCode === 13) {
+        addTodoElement();
+      }
+    };
+  };
+
+  return self;
+})();
+
+DivManager.init();
