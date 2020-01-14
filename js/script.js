@@ -39,13 +39,8 @@ var DivManager = (function(){
     }
 
     function removeToDo( id ) {
-      const todoElement = document.getElementById(id);
-      for (let key in todoList) {
-        if (todoList[key].done === true) {
-          todoList[key].trash = true;
-          delete todoList[key];
-        }
-      }
+      let todoElement = document.getElementById(id);
+      delete todoList[id];
       todoElement.parentNode.parentNode.parentNode.removeChild(todoElement.parentNode.parentNode);
     }
 
@@ -103,7 +98,7 @@ var DivManager = (function(){
 
     trashElement.onclick = function () {
       todoList.forEach(function( element ){
-        if (element.done === true) {
+        if (element.done) {
           removeToDo( element.id );
         }
       });
